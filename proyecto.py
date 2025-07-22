@@ -58,13 +58,6 @@ def verificar_calidad_aire(row, th): #th = thresholds
     return alert if alert else ["Calidad del aire dentro de los límites"], recomendaciones if recomendaciones else ["No son necesarias acciones adicionales."]
 
 
-    """
-    for column in ['PM2.5', 'CO2', 'NO2', 'O3', 'SO2']:
-        if row[column] > th[column]:
-            alert.append(f"Alerta: {column} excede el umbral recomendado.")
-    return alert if alert else ["Calidad del aire dentro de los límites"]
-"""
-
 # Aplicar la función para verificar la calidad del aire
 df['Calidad del aire'], df['Recomendaciones'] = zip(*df.apply(lambda row: verificar_calidad_aire(row, th), axis=1))
 
