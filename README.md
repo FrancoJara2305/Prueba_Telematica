@@ -1,2 +1,2 @@
-# Prueba_Telem-tica
+# Prueba_Telematica
 Programa de prueba
