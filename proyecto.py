@@ -28,17 +28,45 @@ th = {
     'SO2': 10,
 }
 
-# Función para verificar si los niveles de contaminación exceden los umbrales
+# Función para verificar si los niveles de contaminación exceden los umbrales, en base a ello se generarán alertas y recomendaciones
 def verificar_calidad_aire(row, th): #th = thresholds
     alert = []
+    recomendaciones = []
+    
+    if row['PM2.5'] > th['PM2.5']:
+        alert.append("Alerta: PM2.5 excede el umbral recomendado.")
+        recomendaciones.append("Evitar actividades al aire libre y usar mascarilla, especialmente en personas con asma o enfermedades respiratorias.")
+    
+    if row['CO2'] > th['CO2']:
+        alert.append("Alerta: CO2 excede el umbral recomendado.")
+        recomendaciones.append("Ventilar espacios cerrados y reducir el uso de vehículos.")
+    
+    if row['NO2'] > th['NO2']:
+        alert.append("Alerta: NO2 excede el umbral recomendado.")
+        recomendaciones.append("Evitar zonas con alto tráfico vehicular y usar transporte público.")
+    
+    
+    if row['O3'] > th['O3']:
+        alert.append("Alerta: O3 excede el umbral recomendado.")
+        recomendaciones.append("Limitar actividades al aire libre durante las horas de mayor radiación solar (10:00 a 16:00).")
+    
+    if row['SO2'] > th['SO2']:
+        alert.append("Alerta: SO2 excede el umbral recomendado.")
+        recomendaciones.append("Evitar zonas industriales y usar mascarilla en caso de exposición prolongada.")
+    
+    
+    return alert if alert else ["Calidad del aire dentro de los límites"], recomendaciones if recomendaciones else ["No son necesarias acciones adicionales."]
+
+
+    """
     for column in ['PM2.5', 'CO2', 'NO2', 'O3', 'SO2']:
         if row[column] > th[column]:
             alert.append(f"Alerta: {column} excede el umbral recomendado.")
     return alert if alert else ["Calidad del aire dentro de los límites"]
-
+"""
 
 # Aplicar la función para verificar la calidad del aire
-df['Calidad del aire'] = df.apply(lambda row: verificar_calidad_aire(row, th), axis=1)
+df['Calidad del aire'], df['Recomendaciones'] = zip(*df.apply(lambda row: verificar_calidad_aire(row, th), axis=1))
 
 
 # Generador de reporte gráfico
@@ -75,4 +103,4 @@ df.to_csv(file_path, index=False)
 print(f"Reporte guardado en: {file_path}")
 
 # Mostrar la tabla con alertas
-df[['Zona', 'PM2.5', 'CO2', 'NO2', 'O3', 'SO2', 'Calidad del aire']]
+df[['Zona', 'PM2.5', 'CO2', 'NO2', 'O3', 'SO2', 'Calidad del aire', 'Recomendaciones']]
